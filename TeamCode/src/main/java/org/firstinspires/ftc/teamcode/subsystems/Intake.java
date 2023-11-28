@@ -24,7 +24,6 @@ public class Intake extends SubsystemBase {
         holder = new SimpleServo(hardwareMap, "holder", 0, 180, AngleUnit.DEGREES);
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-
         hold();
     }
 

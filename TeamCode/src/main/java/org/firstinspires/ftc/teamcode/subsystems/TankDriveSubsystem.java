@@ -50,7 +50,7 @@ public class TankDriveSubsystem extends SubsystemBase {
         Pose2d poseEstimate = getPoseEstimate();
         drive.setWeightedDrivePower(
                 new Pose2d(
-                        -leftY,
+                        leftY,
                         0,
                         rightX
                 )
