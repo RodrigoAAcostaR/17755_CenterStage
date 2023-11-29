@@ -82,22 +82,6 @@ public class AutoRojo extends LinearOpMode {
 
         rojoIzquierda();
 
-/*
-
-
-
-
-        //Rojo izquierda
-        driveStraight(DRIVE_SPEED, 25.0, 0.0);
-        turnToHeading( TURN_SPEED, 90);
-        turnToHeading(TURN_SPEED, 0);
-        driveStraight(DRIVE_SPEED, -10, 0.0);
-        turnToHeading(TURN_SPEED, 90);
-        driveStraight(DRIVE_SPEED, 23, 90);
-
-         */
-
-
         telemetry.addData("Path", "Complete");
         telemetry.update();
         sleep(1000);
