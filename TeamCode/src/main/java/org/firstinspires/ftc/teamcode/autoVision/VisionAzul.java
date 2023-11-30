@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Autonomous
-public class VisionAzul extends CommandOpMode {
+public class VisionAzul extends LinearOpMode {
 
     double cX = 0;
     double cY = 0;
@@ -44,30 +44,32 @@ public class VisionAzul extends CommandOpMode {
         FtcDashboard.getInstance().startCameraStream(controlHubCam, 30);
 
 
+
+        sleep(1000);
+        telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
+        telemetry.addData("Distance in Inch", (getDistance(width)));
+        telemetry.update();
+
+        if(cX < 200)
+            telemetry.addLine("Lado Izquierdo");
+
+        else if(cX > 200 && cX < 500)
+            telemetry.addLine("En medio");
+        else
+            telemetry.addLine("A la derecha");
         waitForStart();
 
         while (opModeIsActive()) {
-            telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
-            telemetry.addData("Distance in Inch", (getDistance(width)));
-            telemetry.update();
 
-            if(cX < 200)
-                telemetry.addLine("Lado Izquierdo");
 
-            else if(cX > 200 && cX < 500)
-                telemetry.addLine("En medio");
-            else
-                telemetry.addLine("A la derecha");
+
 
         }
 
         controlHubCam.stopStreaming();
     }
 
-    @Override
-    public void initialize() {
 
-    }
 
     private void initOpenCV() {
 
