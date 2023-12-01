@@ -111,7 +111,7 @@ public class AutoRojoLargo extends LinearOpMode {
         FtcDashboard.getInstance().startCameraStream(controlHubCam, 30);
 
         waitForStart();
-        sleep(1000);
+        sleep(2000);
 
 
         hold();
@@ -123,10 +123,14 @@ public class AutoRojoLargo extends LinearOpMode {
         rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         resetHeading();
 
-        if(cX > 500 && cY > 200) {
+        telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
+        telemetry.addData("Distance in Inch", (getDistance(width)));
+        telemetry.update();
+
+        if(cX > 350 && cY > 200) {
             telemetry.addLine("A la derecha");
             rojoDerecha();
-        }else if(cX > 0 && cX < 500 && cY > 200) {
+        }else if(cX > 0 && cX < 350 && cY > 200) {
             telemetry.addLine("En medio");
             rojoMedio();
         }else {

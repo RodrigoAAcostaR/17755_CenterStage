@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class Brazo extends SubsystemBase {
     DcMotorEx brazo;
-    ServoEx avion;
+    ServoEx avion, avion2;
     Telemetry telemetry;
     HardwareMap hardwareMap;
 
@@ -22,6 +22,8 @@ public class Brazo extends SubsystemBase {
         brazo = hardwareMap.get(DcMotorEx.class, "brazo");
         brazo.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         avion = new SimpleServo(hardwareMap, "avion", 0, 180, AngleUnit.DEGREES);
+        avion2 = new SimpleServo(hardwareMap, "avion2", 0, 180, AngleUnit.DEGREES);
+        avion.setInverted(true);
         brazo.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         brazo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -35,11 +37,13 @@ public class Brazo extends SubsystemBase {
     }
 
     public void launch(){
-        avion.turnToAngle(120);
+        avion.turnToAngle(100);
+        avion2.turnToAngle(100);
     }
 
     public void agarrar(){
-        avion.turnToAngle(105);
+        avion.turnToAngle(157);
+        avion2.turnToAngle(157);
     }
 
     public void setPower(int power){

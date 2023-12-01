@@ -52,7 +52,8 @@ public class TeleOpMode2P extends CommandOpMode {
                 .whenPressed(() -> brazo.setPosition(3700));
 
         new GamepadButton(new GamepadEx(gamepad2), GamepadKeys.Button.A)
-                .whenPressed(() -> brazo.setPosition(0));
+                .whenPressed(() -> brazo.setPosition(0))
+                .whenPressed(() -> intake.hold());
 
         new GamepadButton(new GamepadEx(gamepad1), GamepadKeys.Button.DPAD_UP)
                 .whenPressed(()-> brazo.launch());
@@ -60,11 +61,11 @@ public class TeleOpMode2P extends CommandOpMode {
         new GamepadButton(new GamepadEx(gamepad1), GamepadKeys.Button.DPAD_DOWN)
                 .whenPressed(()-> brazo.agarrar());
 
-        intake.setDefaultCommand(new BrazoDefault(intake, gamepadX));
+        new GamepadButton(new GamepadEx(gamepad2), GamepadKeys.Button.RIGHT_BUMPER)
+                .whenPressed(()-> intake.hold());
 
-
-        //new GamepadButton(new GamepadEx(gamepad1), GamepadKeys.Button.DPAD_UP)
-        //        .whenPressed(new BrazoGoToPosition(brazo, 1500));
+        new GamepadButton(new GamepadEx(gamepad2), GamepadKeys.Button.LEFT_BUMPER)
+                .whenPressed(()-> intake.leave());
 
         driveSystem.setDefaultCommand(new TankDriveCommand(
                 driveSystem, () -> -gamepadDriver.getLeftY(), gamepadDriver::getRightX
