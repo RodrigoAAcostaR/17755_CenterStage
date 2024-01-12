@@ -18,7 +18,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.autoVision.VisionAzul;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -38,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Autonomous
-public class AutoAzul extends LinearOpMode {
+public class AutoAzulCorto extends LinearOpMode {
 
     private DcMotor leftDrive = null, rightDrive = null;
     private IMU imu = null;
@@ -102,45 +101,65 @@ public class AutoAzul extends LinearOpMode {
 
         brazo.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         brazo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        /*
+
         initOpenCV();
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
         FtcDashboard.getInstance().startCameraStream(controlHubCam, 30);
 
-         */
+
+        boolean isLeft = false, isRight = false, isMiddle = false;
+
+        while(!isStarted()){
+            if(cX > 0 &&  cX < 350 && width < 5) {
+                telemetry.addLine("Izquierda");
+                telemetry.addData("Coordenadas: ", (int)cX  + ", " + (int) cY);
+                isRight = false;
+                isMiddle = false;
+                isLeft = true;
+            } else if(cX > 350 && cX < 600 && width < 5) {
+                telemetry.addLine("En medio");
+                telemetry.addData("Coordenadas: ", (int)cX  + ", " + (int) cY);
+                isMiddle = true;
+                isLeft = false;
+                isRight = false;
+            }
+            else {
+                telemetry.addLine("A la derecha");
+                isLeft = false;
+                isMiddle = false;
+                isRight = true;
+            }
+            telemetry.addData(">", "Robot Heading = %4.0f", getRawHeading());
+            telemetry.update();
+        }
 
         waitForStart();
         //sleep(2000);
         hold();
-        while (opModeInInit()) {
-            telemetry.addData(">", "Robot Heading = %4.0f", getRawHeading());
-            telemetry.update();
-        }
+
         leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         resetHeading();
 
-/*
-        if(cX > 500 && cY > 200) {
-            telemetry.addLine("En medio");
-            medio();
-        } else if(cX > 350 && cY > 325) {
-            telemetry.addLine("Lado Izquierdo");
+
+        if(isLeft) {
             izquierda();
+        } else if(isMiddle) {
+            medio();
         }
         else {
-            telemetry.addLine("A la derecha");
             derecha();
-        }*/
-        izquierda();
-        waitForStart();
+
+        }
 
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
         sleep(1000);
     }
+
+
 
     public void derecha(){
 
@@ -404,7 +423,7 @@ public class AutoAzul extends LinearOpMode {
         controlHubCam = OpenCvCameraFactory.getInstance().createWebcam(
                 hardwareMap.get(WebcamName.class, "camara1"), cameraMonitorViewId);
 
-        controlHubCam.setPipeline(new AutoAzul.BlobDetectionPipeline());
+        controlHubCam.setPipeline(new AutoAzulCorto.BlobDetectionPipeline());
 
         controlHubCam.openCameraDevice();
         controlHubCam.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT);
@@ -492,5 +511,9 @@ public class AutoAzul extends LinearOpMode {
     private static double getDistance(double width){
         double distance = (objectWidthInRealWorldUnits * focalLength) / width;
         return distance;
+    }
+
+    public void setPowerBrazo(double power){
+        brazo.setPower(power);
     }
 }

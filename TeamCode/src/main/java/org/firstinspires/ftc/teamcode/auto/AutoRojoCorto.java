@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.auto;
+    package org.firstinspires.ftc.teamcode.auto;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -18,6 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.autoVision.VisionRoja;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -37,19 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Autonomous
-public class AutoRojoLargo extends LinearOpMode {
-
-    double cX = 0;
-    double cY = 0;
-    double width = 0;
-
-    private OpenCvCamera controlHubCam;  // Use OpenCvCamera class from FTC SDK
-    private static final int CAMERA_WIDTH = 720; // width  of wanted camera resolution
-    private static final int CAMERA_HEIGHT = 480; // height of wanted camera resolution
-
-    // Calculate the distance using the formula
-    public static final double objectWidthInRealWorldUnits = 3.75;  // Replace with the actual width of the object in real-world units
-    public static final double focalLength = 728;  // Replace with the focal length of the camera in pixels
+public class AutoRojoCorto extends LinearOpMode {
 
     private DcMotor leftDrive = null, rightDrive = null;
     private IMU imu = null;
@@ -74,12 +63,21 @@ public class AutoRojoLargo extends LinearOpMode {
     static final double     HEADING_THRESHOLD       = 1.0;
     static final double     P_TURN_GAIN            = 0.02;
     static final double     P_DRIVE_GAIN           = 0.03;
+
+    double cX = 0;
+    double cY = 0;
+    double width = 0;
+
+    private OpenCvCamera controlHubCam;  // Use OpenCvCamera class from FTC SDK
+    private static final int CAMERA_WIDTH = 720; // width  of wanted camera resolution
+    private static final int CAMERA_HEIGHT = 480; // height of wanted camera resolution
+
+    // Calculate the distance using the formula
+    public static final double objectWidthInRealWorldUnits = 3.75;  // Replace with the actual width of the object in real-world units
+    public static final double focalLength = 728;  // Replace with the focal length of the camera in pixels
     DcMotorEx intake, brazo;
     ServoEx holder;
 
-    public enum estados {
-    LADO_IZQUIERDO, LADO_DERECHO, MEDIO;
-    }
     @Override
     public void runOpMode() throws InterruptedException {
         leftDrive  = hardwareMap.get(DcMotor.class, "leftFront");
@@ -109,6 +107,7 @@ public class AutoRojoLargo extends LinearOpMode {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
         FtcDashboard.getInstance().startCameraStream(controlHubCam, 30);
+
 
         boolean isLeft = false, isRight = false, isMiddle = false;
 
@@ -154,6 +153,7 @@ public class AutoRojoLargo extends LinearOpMode {
         }
         else {
             derecha();
+
         }
 
 
@@ -162,15 +162,34 @@ public class AutoRojoLargo extends LinearOpMode {
         sleep(1000);
     }
 
-    public void derecha(){
-        driveStraight(DRIVE_SPEED, -10, 0.0);
-        turnToHeading(TURN_SPEED, -45);
-        driveStraight(DRIVE_SPEED, -17, 45);
+    public void izquierda(){
+
+        driveStraight(DRIVE_SPEED, -2, 0.0);
+        turnToHeading(TURN_SPEED, 180);
+        driveStraight(DRIVE_SPEED, 15, 180);
+        turnToHeading(TURN_SPEED,-90);
+        driveStraight(DRIVE_SPEED,5,90);
         brazoNeutral();
         setPower(-.4);
         sleep(1000);
         setPower(0);
-        driveStraight(DRIVE_SPEED, -5, 45);
+        driveStraight(DRIVE_SPEED,-10,90);
+        turnToHeading(TURN_SPEED,-45);
+        driveStraight(DRIVE_SPEED,-8,45);
+        turnToHeading(TURN_SPEED,-90);
+        driveStraight(DRIVE_SPEED,-12,90);
+        brazoDejar();
+        sleep(3000);
+        leave();
+        sleep(1000);
+        brazoAbajo();
+        sleep(2000);
+        driveStraight(DRIVE_SPEED,6,90);
+        turnToHeading(TURN_SPEED,0);
+        driveStraight(DRIVE_SPEED,-13,0);
+        turnToHeading(TURN_SPEED,90);
+        driveStraight(DRIVE_SPEED,-10,90);
+
     }
 
     public void medio(){
@@ -182,22 +201,67 @@ public class AutoRojoLargo extends LinearOpMode {
         sleep(1000);
         setPower(0);
         driveStraight(DRIVE_SPEED, -9, 180);
+        turnToHeading(TURN_SPEED, -45);
+        driveStraight(DRIVE_SPEED, -8, 45);
+        turnToHeading(TURN_SPEED,-90);
+        driveStraight(DRIVE_SPEED,-18,90);
+        brazoDejar();
+        sleep(3000);
+        leave();
+        sleep(1000);
+        brazoAbajo();
+        sleep(2000);
+        driveStraight(DRIVE_SPEED,6,90);
+        turnToHeading(TURN_SPEED,0);
+        driveStraight(DRIVE_SPEED,-18,0);
+        turnToHeading(TURN_SPEED,-90);
+        driveStraight(DRIVE_SPEED,-14,90);
 
     }
 
-    public void izquierda(){
-        driveStraight(DRIVE_SPEED, -2, 0.0);
-        turnToHeading(TURN_SPEED, 180);
-        driveStraight(DRIVE_SPEED, 15, 180);
-        turnToHeading(TURN_SPEED,-90);
-        driveStraight(DRIVE_SPEED,5,90);
+    public void derecha(){
+        driveStraight(DRIVE_SPEED, -10, 0.0);
+        turnToHeading(TURN_SPEED, -45);
+        driveStraight(DRIVE_SPEED, -17, 45);
         brazoNeutral();
         setPower(-.4);
         sleep(1000);
         setPower(0);
-        driveStraight(DRIVE_SPEED,-10,90);
+        driveStraight(DRIVE_SPEED, -5, 45);
+        turnToHeading(TURN_SPEED,-145);
+        driveStraight(DRIVE_SPEED,-13,145);
+        turnToHeading(TURN_SPEED,-90);
+        driveStraight(DRIVE_SPEED,-20,90);
+        brazoDejar();
+        sleep(3000);
+        leave();
+        sleep(1000);
+        brazoAbajo();
+        sleep(2000);
+        driveStraight(DRIVE_SPEED,6,90);
+        turnToHeading(TURN_SPEED,0);
+        driveStraight(DRIVE_SPEED,-18,0);
+        turnToHeading(TURN_SPEED,90);
+        driveStraight(DRIVE_SPEED,-19,90);
     }
 
+    public void brazoNeutral(){
+        brazo.setTargetPosition(500);
+        brazo.setPower(1);
+        brazo.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public void brazoDejar(){//5300
+        brazo.setTargetPosition(5350);
+        brazo.setPower(1);
+        brazo.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public void brazoAbajo(){
+        brazo.setTargetPosition(0);
+        brazo.setPower(0.65);
+        brazo.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
     public void setPower( double power){
         intake.setPower(power);
     }
@@ -207,10 +271,6 @@ public class AutoRojoLargo extends LinearOpMode {
         brazo.setPower(1);
         brazo.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
-    public void brazoNeutral(){
-        brazo.setTargetPosition(500);
-        brazo.setPower(1);
-        brazo.setMode(DcMotor.RunMode.RUN_TO_POSITION);    }
 
     public void hold(){
         holder.turnToAngle(2);
@@ -365,7 +425,7 @@ public class AutoRojoLargo extends LinearOpMode {
         controlHubCam = OpenCvCameraFactory.getInstance().createWebcam(
                 hardwareMap.get(WebcamName.class, "camara1"), cameraMonitorViewId);
 
-        controlHubCam.setPipeline(new AutoRojoLargo.BlobDetectionPipeline());
+        controlHubCam.setPipeline(new AutoRojoCorto.BlobDetectionPipeline());
 
         controlHubCam.openCameraDevice();
         controlHubCam.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT);
@@ -452,5 +512,4 @@ public class AutoRojoLargo extends LinearOpMode {
         double distance = (objectWidthInRealWorldUnits * focalLength) / width;
         return distance;
     }
-
 }

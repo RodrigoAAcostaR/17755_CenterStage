@@ -26,14 +26,6 @@ public class TeleOpMode2P extends CommandOpMode {
         Intake intake = new Intake(telemetry, hardwareMap);
         Brazo brazo = new Brazo(hardwareMap, telemetry);
 
-        if(brazo.getPosition() < 350){
-            intake.hold();
-        }
-
-        if(brazo.getPosition() == 3700){
-            intake.leave();
-        }
-
         new GamepadButton(new GamepadEx(gamepad1), GamepadKeys.Button.RIGHT_BUMPER)
                 .whileHeld(() -> intake.setPower(1))
                 .whenReleased(() -> intake.setPower(0));
