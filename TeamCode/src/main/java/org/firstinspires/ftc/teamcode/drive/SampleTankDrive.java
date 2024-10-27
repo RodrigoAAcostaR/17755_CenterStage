@@ -54,7 +54,8 @@ import java.util.List;
  * Simple tank drive hardware implementation for REV hardware.
  */
 @Config
-public class SampleTankDrive extends TankDrive {
+public class
+SampleTankDrive extends TankDrive {
     public static PIDCoefficients AXIAL_PID = new PIDCoefficients(0, 0, 0);
     public static PIDCoefficients CROSS_TRACK_PID = new PIDCoefficients(0, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
